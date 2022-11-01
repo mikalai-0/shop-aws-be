@@ -1,18 +1,19 @@
 import { errorResponse, successResponse } from "./utils/apiResponseBuilder";
-import productsMock from './assets/products.json';
-import {Product} from './types/api-types';
+import {Product, Stock} from './types/api-types';
+import {productRepository, stockRepository} from "./lib/repositories";
 
 export const getProductByIdHandler = () => async (event, _context) => {
     try {
         const productId = event.pathParameters['productId'];
-
-        const product = productsMock.find(item => item.id === productId);
+        const product: Product = await productRepository.GetProduct(productId);
+        const stock: Stock = await stockRepository.GetStockByProductId(productId);
 
         if ( product ) {
-            return successResponse<Product>( product );
+            const response = { ...product, count: stock?.count || 0 };
+            return successResponse<Product>( response );
         }
 
-        return errorResponse( { name: 'Not Found', message: "Product not found" }, 404 );
+        return errorResponse( { name: 'Not Found', message: `Product ${productId} not found` }, 404 );
     }
     catch ( err ) {
         return errorResponse( err );

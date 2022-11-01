@@ -3,66 +3,30 @@
     "id": "1",
     "price": 24,
     "title": "Askaneli Saperavi 2018",
-    "company": "Askaneli",
-    "sort": "saperavi",
-    "year": 2018,
-    "type": "red",
-    "sugar": "dry",
-    "skinContact": true
+    "description": "Dry red wine made in kvevri"
   },
   {
     "id": "2",
     "price": 20,
     "title": "Khareba Kindzmarauli",
-    "company": "Khareba",
-    "sort": "kindzmarauli",
-    "year": 2021,
-    "type": "red",
-    "sugar": "semi-sweet",
-    "skinContact": false
+    "description": "Semi-sweet red wine"
   },
   {
     "id": "3",
     "price": 22,
     "title": "Khareba Mukuzani 2020",
-    "company": "Khareba",
-    "sort": "mukuzani",
-    "year": 2020,
-    "type": "red",
-    "sugar": "dry",
-    "skinContact": false
+    "description": "Oak barrel dry red wine"
   },
   {
     "id": "4",
     "price": 21,
     "title": "Askaneli Kisi 2019",
-    "company": "Askaneli",
-    "sort": "kisi",
-    "year": 2019,
-    "type": "amber",
-    "sugar": "dry",
-    "skinContact": true
+    "description": "Kvevri amber wine"
   },
   {
     "id": "5",
-    "price": 12,
-    "title": "Tbilvino Rkatsiteli",
-    "company": "Tbilvino",
-    "sort": "rkatsiteli",
-    "year": 2021,
-    "type": "white",
-    "sugar": "dry",
-    "skinContact": false
-  },
-  {
-    "id": "6",
     "price": 50,
     "title": "Begaso Kisi 2018",
-    "company": "Begaso",
-    "sort": "kisi",
-    "year": 2018,
-    "type": "amber",
-    "sugar": "dry",
-    "skinContact": true
+    "description": "Premium amber wine"
   }
 ]
