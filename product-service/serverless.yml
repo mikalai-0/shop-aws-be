@@ -27,6 +27,27 @@ provider:
   region: eu-west-1
   environment:
     ENV_STAGE: ${opt:stage, 'dev'}
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:Query"
+            - "dynamodb:Scan"
+            - "dynamodb:GetItem"
+            - "dynamodb:PutItem"
+            - "dynamodb:DeleteItem"
+            - "dynamodb:BatchWriteItem"
+          Resource: "arn:aws:dynamodb:eu-west-1:653520116645:table/Products"
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:Query"
+            - "dynamodb:Scan"
+            - "dynamodb:GetItem"
+            - "dynamodb:PutItem"
+            - "dynamodb:DeleteItem"
+            - "dynamodb:BatchWriteItem"
+          Resource: "arn:aws:dynamodb:eu-west-1:653520116645:table/Stocks"
 
 plugins:
   - serverless-auto-swagger
@@ -37,24 +58,6 @@ custom:
     webpackConfig: 'webpack.config.js'
     includeModules: true
     dotenvVars: ${file(configs.js)}
-
-# you can add statements to the Lambda function's IAM Role here
-#  iam:
-#    role:
-#      statements:
-#        - Effect: "Allow"
-#          Action:
-#            - "s3:ListBucket"
-#          Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#        - Effect: "Allow"
-#          Action:
-#            - "s3:PutObject"
-#          Resource:
-#            Fn::Join:
-#              - ""
-#              - - "arn:aws:s3:::"
-#                - "Ref" : "ServerlessDeploymentBucket"
-#                - "/*"
 
 # you can define service wide environment variables here
 #  environment:
@@ -89,6 +92,16 @@ functions:
                 productId: true
           responseData:
             200:
+              bodyType: Product
+  createProduct:
+    handler: handler.createProduct
+    events:
+      - http:
+          path: products
+          method: post
+          cors: true
+          responseData:
+            201:
               bodyType: Product
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
