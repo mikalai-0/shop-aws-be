@@ -27,6 +27,8 @@ provider:
   region: eu-west-1
   environment:
     ENV_STAGE: ${opt:stage, 'dev'}
+    SQS_URL:
+      Ref: catalogItemsQueue
   iamRoleStatements:
     - Effect: "Allow"
       Action: "s3:ListBucket"
@@ -36,6 +38,10 @@ provider:
       Action: "s3:*"
       Resource:
         - "arn:aws:s3:::cloudx-import/*"
+    - Effect: "Allow"
+      Action: "sqs:*"
+      Resource:
+        Fn::GetAtt: [ catalogItemsQueue, Arn ]
 
 plugins:
   - serverless-webpack
@@ -120,13 +126,16 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+resources:
+  Resources:
+    catalogItemsQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: catalogItemsQueue
+
+  Outputs:
+    catalogItemsQueueArn:
+      Value:
+        Fn::GetAtt: [catalogItemsQueue, Arn]
+      Export:
+        Name: CatalogItemsQueueArnId
