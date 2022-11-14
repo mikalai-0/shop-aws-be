@@ -1,6 +1,6 @@
-import { errorResponse, successResponse } from "./utils/apiResponseBuilder";
-import {Product, Stock} from './types/api-types';
-import {productRepository, stockRepository} from "./lib/repositories";
+import { errorResponse, successResponse } from "../../utils/apiResponseBuilder";
+import {Product, Stock} from '../../types/api-types';
+import {productRepository, stockRepository} from "../../lib/repositories";
 
 export const getProductsListHandler = () => async (_event, _context) => {
     try {

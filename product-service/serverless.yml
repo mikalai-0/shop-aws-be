@@ -27,6 +27,8 @@ provider:
   region: eu-west-1
   environment:
     ENV_STAGE: ${opt:stage, 'dev'}
+    SNS_ARN:
+      Ref: createProductTopic
   iam:
     role:
       statements:
@@ -48,6 +50,14 @@ provider:
             - "dynamodb:DeleteItem"
             - "dynamodb:BatchWriteItem"
           Resource: "arn:aws:dynamodb:eu-west-1:653520116645:table/Stocks"
+        - Effect: "Allow"
+          Action: "sqs:*"
+          Resource:
+            - Fn::ImportValue: CatalogItemsQueueArnId
+        - Effect: "Allow"
+          Action: "sns:*"
+          Resource:
+            Ref: createProductTopic
 
 plugins:
   - serverless-auto-swagger
@@ -103,6 +113,13 @@ functions:
           responseData:
             201:
               bodyType: Product
+  catalogBatchProcess:
+    handler: handler.catalogBatchProcess
+    events:
+      - sqs:
+          batchSize: 5
+          arn:
+            Fn::ImportValue: CatalogItemsQueueArnId
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -144,12 +161,28 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
+resources:
+  Resources:
+    createProductTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: createProductTopic
+    createProductSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: nikolai.lptkn@gmail.com
+        Protocol: email
+        TopicArn:
+          Ref: createProductTopic
+    createExpensiveProductSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: lelouch478@gmail.com
+        Protocol: email
+        TopicArn:
+          Ref: createProductTopic
+        FilterPolicy:
+          price: [ { "numeric": [ ">=", 100 ] } ]
 #  Outputs:
 #     NewOutput:
 #       Description: "Description for the output"
