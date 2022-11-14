@@ -29,10 +29,3 @@ export class NotificationService {
         });
     }
 }
-
-// MessageAttributes: {
-//     price: {
-//         DataType: "Number",
-//             StringValue: `${minPrice}`
-//     }
-// },

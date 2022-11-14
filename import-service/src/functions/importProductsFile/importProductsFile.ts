@@ -12,6 +12,7 @@ export const importProductsFileHandler = async (event) => {
         const uploadParams = {
             Bucket: BUCKET,
             Key: `uploaded/${name}`,
+            ContentType: 'text/csv',
         };
         const signedUrl = await s3Client.getSignedUrl('putObject', uploadParams);
 
